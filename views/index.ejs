@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../Styles/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kelly+Slab&display=swap"
+      rel="stylesheet"
+    />
+    <title>Carolina's Blog</title>
+  </head>
+  <body>
+    <div id="content">
+      <div id="latestPosts">
+        <h2>latest posts</h2>
+          <% latestPosts.forEach((post, index) => { %>
+            <div class="post">
+                <div class="blogTitle"><%= post.title %></div>
+                <div class="blogDate"><%= post.createdAt %></div>
+                <div class="editPost">
+                  <a href="/editpost/<%= index %>">
+                    <img src="/icons/Edit-Pen.svg" alt="Edit">
+                  </a>
+                </div>
+                <div class="blogContent"><%= post.content %></div>
+              </div>
+          <% }) %>
+      </div>
+      <div id="writePost">
+       <h2><%= editPost ? "Edit Post" : "New Post" %></h2>
+       <div class="form-container">
+          <form id="blogpost-form" action="<%= editPost ? '/updatepost/' + editPost.index : '/newpost' %>" method="POST">
+            <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Title"
+              value="<%= editPost ? editPost.title : '' %>"
+              required
+            />
+            <textarea
+              id="blogPost"
+              name="content"
+              placeholder="What's on your mind...?"
+              required
+            ><%= editPost ? editPost.content : '' %></textarea>
+            <div class="button-group">
+              <button type="submit"><%= editPost ? "Update" : "Publish" %></button>
+              <% if (editPost) { %>
+                <button type="submit" form="deletepost-form" class="delete-button">Delete</button>
+              <% } %>
+            </div>
+          </form>
+          <% if (editPost) { %>
+            <form id="deletepost-form" action="/deletepost/<%= editPost.index %>" method="POST"></form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <img
+        src="/images/reading-doodle.png"
+        class="footerImg"
+        alt="girl sitting and reading a book"
+      />
+    </div>
+  </body>
+</html>
